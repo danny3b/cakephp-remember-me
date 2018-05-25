@@ -59,12 +59,12 @@ class RememberMeComponent extends Component
     public function initialize(array $config)
     {
         if (!$this->_config['cypherKey']) {
-            $this->config('cypherKey', Security::salt());
+            $this->getConfig('cypherKey', Security::salt());
         }
 
-        $this->Cookie->configKey($this->config('cookieName'), [
-            'key' => $this->config('cypherKey'),
-            'expires' => $this->config('period')
+        $this->Cookie->configKey($this->getConfig('cookieName'), [
+            'key' => $this->getConfig('cypherKey'),
+            'expires' => $this->getConfig('period')
         ]);
     }
 
@@ -86,7 +86,7 @@ class RememberMeComponent extends Component
             $encryptedData = serialize($data);
         }
 
-        $this->Cookie->write($this->config('cookieName'), $encryptedData);
+        $this->Cookie->write($this->getConfig('cookieName'), $encryptedData);
 
         return true;
     }
@@ -98,7 +98,7 @@ class RememberMeComponent extends Component
      */
     public function getRememberedData()
     {
-        $cookieData = $this->Cookie->read($this->config('cookieName'));
+        $cookieData = $this->Cookie->read($this->getConfig('cookieName'));
         if (!empty($cookieData)) {
             $data = json_decode($cookieData);
             if (!$data) {
@@ -118,6 +118,6 @@ class RememberMeComponent extends Component
      */
     public function removeRememberedData()
     {
-        $this->Cookie->delete($this->config('cookieName'));
+        $this->Cookie->delete($this->getConfig('cookieName'));
     }
 }
